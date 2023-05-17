@@ -14,8 +14,8 @@ public class Lista<A> {
              this.proximo = null;
          }
      }
-    private Elemento<A> primeiro;
-    private Elemento<A> ultimo;
+    protected Elemento<A> primeiro;
+    protected Elemento<A> ultimo;
     private int tamanho;
 
     /*definindo os atributos como private eu garanto que
@@ -124,6 +124,29 @@ public class Lista<A> {
         return this.tamanho;
     }
 
+    public Elemento<A> getPrimeiro() {
+        return this.primeiro;
+    }
+    public Elemento<A> obterElemento(int indice) {
+        if (indice < 0 || indice >= tamanho) {
+            throw new IndexOutOfBoundsException("Índice inválido.");
+        }
+
+        Elemento<A> elementoAtual = primeiro;
+        for (int i = 0; i < indice; i++) {
+            elementoAtual = elementoAtual.proximo;
+        }
+
+        return elementoAtual;
+    }
+    public void atualizarValor(int indice, A valor) {
+        Elemento<A> elementoAtual = obterElemento(indice);
+
+        if (elementoAtual != null) {
+            elementoAtual.valor = valor;
+        }
+    }
+
     public void imprimir() { /* primeiro verifica se a lista ta vazia, se nao estiver ele seta a variavel pro primeiro elemento
     depois percorre e imprime todos os elementos da lista separado por um espaço */
         if (this.tamanho == 0) {
@@ -154,9 +177,33 @@ public class Lista<A> {
         }
     }
 
+    public void inserirElemento(A valor, A elemento) {
+        Elemento<A> novoElemento = new Elemento<>(valor);
 
+        if (this.tamanho == 0) {
+            throw new RuntimeException("Lista vazia. Não é possível inserir");
+        }
 
+        Elemento<A> elementoAtual = this.primeiro;
+        while (elementoAtual != null && !elementoAtual.valor.equals(elemento)) {
+            elementoAtual = elementoAtual.proximo;
+        }
 
+        if (elementoAtual == null) {
+            throw new IllegalArgumentException("O elemento não está presente na lista.");
+        }
 
+        novoElemento.proximo = elementoAtual.proximo;
+        if (elementoAtual.proximo != null) {
+            elementoAtual.proximo.anterior = novoElemento;
+        }
+        elementoAtual.proximo = novoElemento;
+        novoElemento.anterior = elementoAtual;
 
+        if (elementoAtual == this.ultimo) {
+            this.ultimo = novoElemento;
+        }
+
+        this.tamanho++;
+    }
 }
