@@ -21,7 +21,7 @@ public class Main {
         insertionSort(lista);
 
         // Imprimir a lista após a ordenação
-        System.out.println("Lista após a ordenação:");
+        System.out.println("Lista após a ordenação com InsertionSort:");
         lista.imprimir();
 
         // Chamar o algoritmo de ordenação QuickSort
